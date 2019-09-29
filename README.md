@@ -1,8 +1,8 @@
 # Django---Webapp
 Created a Website to fetch restuarants from zomato api
 
-#Dependecies,
-pip install django
+# Dependecies,
+pip install django<br>
 pip install requests
 
 # Running the project
