@@ -11,4 +11,5 @@ pip install requests
 3. python manage.py collectstatic
 4. python manage.py runserver
 5. Copy the local link and check in browser
+6. Create a username and password from home page to get user access
 
