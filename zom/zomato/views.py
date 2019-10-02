@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.models import User,auth
-from .models import cities
+from .models import cities,rst
 from .api import get_rest
 # Create your views here.
 
@@ -54,6 +54,7 @@ def login(request):
 
 def welcome(request):
     if request.user.is_authenticated:
+        rst.objects.all().delete()
         city = cities.objects.all()
         return render(request, 'cities.html',{'city':city})
     else:
@@ -66,22 +67,16 @@ def logouts(request):
     return redirect('/')
 
 def details(request, c_id, c_name):
+    #rst.objects.all().delete()
     if request.user.is_authenticated:
         city = cities.objects.all()
-        rest = get_rest(c_id)
-        name = []
-        url = []
-        pic = []
-        for i in rest:
-            name.append(rest[i]['name'])
-            url.append(rest[i]['url'])
-            pic.append(rest[i]['pic'])
-        return render(request, 'details.html',{'city':city,
-        'name':name
-        })
+        data= rst.objects.all()
+        get_rest(c_id)
+        return render(request, 'details.html',{'city':city,'data':data})
     else:
         messages.info(request, 'Please Login')
         return redirect('/')
+    
 def sss(request):
     if request.user.is_authenticated:
         return render(request, 'test.html')
