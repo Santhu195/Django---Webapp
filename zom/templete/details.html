@@ -14,12 +14,14 @@
 <div class="container">
   <div class="row">
     <!-- City 1 -->
-    {% for nam in name %}
-    <div class="col-xl-3 col-md-6 mb-4">
+    {% for dat in data %}
+    <div class="col-lg-3 d-flex align-items-stretch">
+    
       <div class="card border-0 shadow">
+      <img src="{{dat.img}}" width="628" height="248" class="card-img-top" alt="...">
         <div class="card-body text-center">
-          <h5 class="card-title mb-0">{{nam}}</h5>
-          <div class="card-text text-black-35">{{nam}}</div>
+          <h5 class="card-title mb-0">{{dat.name}}</h5>
+          <div class="card-text text-black-20">{{dat.adress}}</div>
         <a href="sss" class="btn btn-primary">View Restaurants</a>
         </div>
       </div>
