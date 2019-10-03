@@ -77,9 +77,3 @@ def details(request, c_id, c_name):
         messages.info(request, 'Please Login')
         return redirect('/')
     
-def sss(request):
-    if request.user.is_authenticated:
-        return render(request, 'test.html')
-    else:
-        messages.info(request, 'Please Login')
-        return redirect('/')

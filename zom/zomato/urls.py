@@ -22,8 +22,7 @@ urlpatterns = [
     path('', views.login, name='login'),
     path('welcome', views.welcome, name='welcome'),
     path('logout', views.logouts),
-    path('details<int:c_id>-<str:c_name>', views.details, name='Restaurants'),
-    path('sss', views.sss,  name='sss'),
+    path('details<int:c_id>-<str:c_name>', views.details, name='Restaurants')
 
     
 ]

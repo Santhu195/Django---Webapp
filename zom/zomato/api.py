@@ -14,22 +14,24 @@ def get_rest(c_id):
     address=[]
     pic=[]
     name=[]
+    url=[]
     for i in p['restaurants']:
         new = i['restaurant']
         address.append(new['location']['address'])
         name.append(new['name'])
         pic.append(new['thumb'])
+        url.append(new['url'])
     
     for j in range(len(name)):
         d = rst.objects.count()
         if d == 5:
-            if rst.objects.filter(name=name[j],img=pic[j],adress=address[j]).exists():
+            if rst.objects.filter(name=name[j],img=pic[j],adress=address[j],url=url[j]).exists():
                 break
             else:
-                ab = rst.objects.update(name=name[j],img=pic[j],adress=address[j])
+                ab = rst.objects.update(name=name[j],img=pic[j],adress=address[j],url=url[j])
          
         else:
-            ab = rst.objects.create(name=name[j],img=pic[j],adress=address[j])
+            ab = rst.objects.create(name=name[j],img=pic[j],adress=address[j],url=url[j])
             ab.save()
 
 
