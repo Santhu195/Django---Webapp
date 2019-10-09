@@ -5,7 +5,7 @@ from .models import rst
 
 def get_rest(c_id):
     api_token = '0c3e9be2aa9cf4b320d1e24f2a36a5bb'
-    api_url_base = 'https://developers.zomato.com/api/v2.1/search?entity_id='+str(c_id)+'&count=5&entity_type=city&sort=rating'
+    api_url_base = 'https://developers.zomato.com/api/v2.1/search?entity_id='+str(c_id)+'&count=30&entity_type=city&sort=rating'
     headers = {'user-key': api_token}
     response = requests.get(url =api_url_base, headers=headers)
     p = response.json()
@@ -24,7 +24,7 @@ def get_rest(c_id):
     
     for j in range(len(name)):
         d = rst.objects.count()
-        if d == 5:
+        if d == 30:
             if rst.objects.filter(name=name[j],img=pic[j],adress=address[j],url=url[j]).exists():
                 break
             else:

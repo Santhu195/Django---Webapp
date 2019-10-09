@@ -1,10 +1,14 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.db.models import Q
 from django.contrib.auth.models import User,auth
 from .models import cities,rst
+from django.middleware import csrf
 from .api import get_rest
+from django.template import RequestContext
+from django.core.paginator import Paginator
 # Create your views here.
 
 def register(request):
@@ -34,27 +38,33 @@ def register(request):
     return render(request, 'register.html')
 
 def login(request):
+    c={}
+    #c.update(csrf(request))
+    if request.user.is_authenticated:
+        return redirect('/welcome')
+    else:
+        c={}
+        #c.update(csrf(request))
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = auth.authenticate(username=username,password=password)
 
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username=username,password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('/welcome')
 
-        if user is not None:
-            auth.login(request, user)
-            return redirect('/welcome')
+            else:
+                messages.info(request, 'Username or Password does not match')
+                return redirect('/')
 
         else:
-            messages.info(request, 'Username or Password does not match')
-            return redirect('/')
-
-    else:
-        pass
+            pass
     return render(request, 'register.html') 
 
 def welcome(request):
     if request.user.is_authenticated:
-        rst.objects.all().delete()
+        #rst.objects.all().delete()
         city = cities.objects.all()
         return render(request, 'cities.html',{'city':city})
     else:
@@ -67,13 +77,22 @@ def logouts(request):
     return redirect('/')
 
 def details(request, c_id, c_name):
-    #rst.objects.all().delete()
+    rst.objects.all().delete()
     if request.user.is_authenticated:
         city = cities.objects.all()
-        data= rst.objects.all()
+        data_l= rst.objects.all()
         get_rest(c_id)
+        query = request.GET.get("q")
+        if query:
+            data_l = rst.objects.filter(Q(name__icontains=query)|
+            Q(adress__icontains=query))
+            rst_name = rst.objects.all()
+        paginator = Paginator(data_l,8 ) 
+
+        page = request.GET.get('page')
+        data = paginator.get_page(page)
+
         return render(request, 'details.html',{'city':city,'data':data})
     else:
         messages.info(request, 'Please Login')
         return redirect('/')
-    

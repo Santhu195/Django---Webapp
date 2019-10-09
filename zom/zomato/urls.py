@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.template import RequestContext
 from . import views
 app_name = 'res'
 urlpatterns = [
     path('register', views.register, name='register'),
-    path('', views.login, name='login'),
+    path('', views.login,name='login'),
     path('welcome', views.welcome, name='welcome'),
     path('logout', views.logouts),
-    path('details<int:c_id>-<str:c_name>', views.details, name='Restaurants')
+    path('details<int:c_id>-<str:c_name>/', views.details, name='Restaurants'),
 
     
 ]

@@ -7,10 +7,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <div class="container">
     <h1 class="font-weight-light text-white">Here are the Top Restaurants </h1>
+  <form method="GET" action="">
+  <input type = "text" name= "q" placeholder = "Search by name or location" value="{{request.GET.q}}" />
+  <input type = "submit" value="search"/>
+  </form> 
+
   </div>
 </header>
 
 <!-- Page Content -->
+{% if data %}
 <div class="container">
   <div class="row">
     <!-- City 1 -->
@@ -28,8 +34,31 @@
       
     </div>
         {% endfor %}
-        
   </div>
     
 </div>
+<div class="pagination">
+    <span class="step-links">
+        {% if data.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ data.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ data.number }} of {{ data.paginator.num_pages }}.
+        </span>
+
+        {% if data.has_next %}
+            <a href="?page={{ data.next_page_number }}">next</a>
+            <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 <!-- /.container -->
+
+{% else %}
+    <h2> no results found </h2>
+
+{% endif %}
+
+
